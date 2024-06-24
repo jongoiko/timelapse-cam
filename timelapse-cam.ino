@@ -60,10 +60,10 @@ char file_name[MAX_PIC_PATH_LEN];
 void setup() {
   Serial.begin(115200);
   TimerCAM.begin(true);
-  TimerCAM.Power.setLed(255);
   connect_wifi();
   get_current_time();
   take_picture();
+  TimerCAM.Power.setLed(255);
   setup_firebase();
   make_pic_file_name();
   upload_picture();
