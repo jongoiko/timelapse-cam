@@ -23,6 +23,7 @@
 
 #define WIFI_SSID "YOUR_WIFI_SSID_HERE"
 #define WIFI_PASSWORD "YOUR_WIFI_PASSWORD_HERE"
+#define MAX_WIFI_WAIT_SEC 30
 
 #define FIREBASE_USER_EMAIL "YOUR_FIREBASE_AUTH_EMAIL_HERE"
 #define FIREBASE_USER_PASSWD "YOUR_FIREBASE_AUTH_PASSWORD_HERE"
@@ -77,9 +78,12 @@ void connect_wifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   wifi_client.setCACert(TELEGRAM_CERTIFICATE_ROOT);
   Serial.print("Connecting to Wi-Fi");
+  int start_time = millis();
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
     delay(300);
+    if (millis() - start_time >= 1000 * MAX_WIFI_WAIT_SEC)
+      TimerCAM.Power.timerSleep(1);
   }
   Serial.println();
   Serial.print("Connected with IP ");
